@@ -1,19 +1,18 @@
 import copy
 import json
 
-import pandas as pd
-
 import bigtree
 PROJECT = bigtree.PROJECT
 
 
-COLUMNS = 'col:ID col:parentID col:status col:scientificName col:rank'.split()
-CoL = pd.read_csv(PROJECT / 'data' / 'NameUsage.tsv', sep='\t', header=0, on_bad_lines='warn', usecols=COLUMNS).rename(columns=lambda x: x.split(':')[1]).query('status == "accepted"').drop(columns=['status'])
-CoL.reset_index()
-
-
 def build():
+    import pandas as pd
+
     ROOT = 'ROOT of LIVES'
+
+    COLUMNS = 'col:ID col:parentID col:status col:scientificName col:rank'.split()
+    CoL = pd.read_csv(PROJECT / 'data' / 'NameUsage.tsv', sep='\t', header=0, on_bad_lines='warn', usecols=COLUMNS).rename(columns=lambda x: x.split(':')[1]).query('status == "accepted"').drop(columns=['status'])
+    CoL.reset_index()
 
     # CoL ID -> index の対応表
     index = {id: i for i, id in enumerate(CoL.ID)}
@@ -39,7 +38,6 @@ def build():
             _life['parent'] = parent['n']
             parent['children'].append(_life['n'])
         except: orphans.append({ 'id': life.ID, 'name': life.scientificName }) # parentID が登録されていない Life は無視する
-
 
     ToL = dict(lives=lives, index=index, lookup=lookup, orphans=orphans)
     with (PROJECT / 'data' / 'tree_of_lives.json').open('w') as w: json.dump(ToL, w)
