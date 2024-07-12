@@ -1,9 +1,3 @@
-# 実行方法: src の上の bigtree ディレクトリで
-#   env PYTHONPATH=./src python3 src/test/test_tol.py
-# あるいは、環境変数の PYTHONPATH を export PYTHONPATH=`pwd`/src と設定しておいてから
-#    python3 src/test/test_tol.py
-# 後者の方法だと、cd src/test したあとで、単に python3 test_tol.py としても実行できる。
-
 import json
 
 import bigtree.tol

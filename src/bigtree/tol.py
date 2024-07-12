@@ -1,8 +1,7 @@
 import copy
 import json
 
-import bigtree
-PROJECT = bigtree.PROJECT
+from bigtree import PROJECT
 
 
 def build():
